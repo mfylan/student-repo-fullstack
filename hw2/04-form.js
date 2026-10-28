@@ -1,5 +1,5 @@
-const express = require("express");
-const path = require("path");
+const express = require('express');
+const path = require('path');
 const app = express();
 const port = process.env.PORT || 5001;
 
@@ -11,26 +11,26 @@ const port = process.env.PORT || 5001;
 app.use(express.urlencoded({ extended: false }));
 
 // Escape user input before putting it in HTML so it can't inject markup/scripts
-const escapeHtml = function escapeHtml(value = "") {
+const escapeHtml = function escapeHtml(value = '') {
   return String(value)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 };
 
-app.get("/form", (req, res) => {
-  res.sendFile(path.join(__dirname, "form.html"));
+app.get('/form', (req, res) => {
+  res.sendFile(path.join(__dirname, 'form.html'));
 });
 
-app.post("/submit", (req, res) => {
+app.post('/submit', (req, res) => {
   const { username, email, comments, newsletter } = req.body;
 
   // An unchecked checkbox is not sent at all, so its presence means "yes"
-  const signedUp = newsletter === "on" ? "Yes" : "No";
+  const signedUp = newsletter === 'on' ? 'Yes' : 'No';
 
-  res.type("html").send(`<!DOCTYPE html>
+  res.type('html').send(`<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -50,8 +50,8 @@ app.post("/submit", (req, res) => {
 });
 
 // Visiting /submit sends people back to the form
-app.get("/submit", (req, res) => {
-  res.redirect("/form");
+app.get('/submit', (req, res) => {
+  res.redirect('/form');
 });
 
 app.listen(port, () => {

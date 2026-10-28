@@ -1,4 +1,4 @@
-const express = require("express");
+const express = require('express');
 const app = express();
 const port = process.env.PORT || 5001;
 
@@ -12,47 +12,38 @@ const port = process.env.PORT || 5001;
 
 // For other routes, such as http://localhost:5001/other, this exercise should return a status code 404 with '404 - page not found' in html format
 
-const routes = [
-  "welcome",
-  "redirect",
-  "redirected",
-  "cache",
-  "cookie",
-  "other",
-];
-
-app.get("/", (req, res) => {
-  res.status(200);
-  res.set({ "Content-Type": "text/html" });
-  res.send("Express Routing Exercise");
+app.get('/', (req, res) => {
+  res.status(200).type('html').send('Express Routing Exercise');
+  res.set({ 'Content-Type': 'text/html' });
+  res.send('Express Routing Exercise');
 });
 
-app.get("/welcome", (req, res) => {
-  res.status(200).type("html").send("<h1>Welcome!</h1><p>Howdy!</p>");
+app.get('/welcome', (req, res) => {
+  res.status(200).type('html').send('<h1>Welcome!</h1><p>Howdy!</p>');
 });
 
-app.get("/redirect", (req, res) => {
-  res.redirect(302, "/redirected");
+app.get('/redirect', (req, res) => {
+  res.redirect(302, '/redirected');
 });
 
-app.get("/redirected", (req, res) => {
-  res.status(200).type("html").send("<h1>This is the redirected page!</h1>");
+app.get('/redirected', (req, res) => {
+  res.status(200).type('html').send('<h1>This is the redirected page!</h1>');
 });
 
-app.get("/cache", (req, res) => {
+app.get('/cache', (req, res) => {
   // 86400 seconds = 1 day
-  res.set("Cache-Control", "public, max-age=86400");
-  res.type("html").send("<p>this resource was cached</p>");
+  res.set('Cache-Control', 'public, max-age=86400');
+  res.type('html').send('<p>this resource was cached</p>');
 });
 
-app.get("/cookie", (req, res) => {
-  res.cookie("hello", "world");
-  res.type("text/plain").send("cookies… yummm");
+app.get('/cookie', (req, res) => {
+  res.cookie('hello', 'world');
+  res.type('text/plain').send('cookies… yummm');
 });
 
 // Catch-all: must come after every other route
 app.use((req, res) => {
-  res.status(404).type("html").send("<h1>404 - page not found</h1>");
+  res.status(404).type('html').send('<h1>404 - page not found</h1>');
 });
 
 app.listen(port, () => {
