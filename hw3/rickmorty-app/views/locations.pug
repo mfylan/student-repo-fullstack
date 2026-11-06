@@ -1,0 +1,7 @@
+extends layout
+
+block content
+  h1 Locations by type
+  ul
+    each names, type in groups
+      li #{type}: #{names.length}

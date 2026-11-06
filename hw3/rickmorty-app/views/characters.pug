@@ -1,0 +1,10 @@
+extends layout
+
+block content
+  h1 Characters
+  each c in characters
+    .card
+      img(src=c.image alt=c.name)
+      h3= c.name
+      p Species: #{c.species || "unknown"}
+      p Status: #{c.status}
