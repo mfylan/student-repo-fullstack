@@ -6,13 +6,14 @@ app.set('view engine', 'pug');
 const BASE = 'https://rickandmortyapi.com/api';
 const cache = {};
 
-const sleep = (seconds) =>
-  new Promise((resolve) => {
+const sleep = function sleep(seconds) {
+  return new Promise((resolve) => {
     setTimeout(resolve, seconds * 1000);
   });
+};
 
 // Fetch a URL. If the API says "too many requests", wait and try again.
-async function fetchJson(url, attempt = 1) {
+const fetchJson = async function fetchJson(url, attempt = 1) {
   const res = await fetch(url);
   if (res.ok) return res.json();
   if (res.status !== 429 || attempt >= 5) {
@@ -22,26 +23,26 @@ async function fetchJson(url, attempt = 1) {
     Math.min(Number(res.headers.get('retry-after')) || attempt * 2, 30),
   );
   return fetchJson(url, attempt + 1);
-}
+};
 
 // Follow the API's "next" link one page at a time
 // Pages are requested one after another to avoid rate limiting.
-async function getPages(url, maxPages) {
+const getPages = async function getPages(url, maxPages) {
   const data = await fetchJson(url);
   if (!data.info.next || maxPages <= 1) return data.results;
   const rest = await getPages(data.info.next, maxPages - 1);
   return [...data.results, ...rest];
-}
+};
 
 // Results are kept in memory so each list is only fetched once per server run.
-async function getAll(resource, maxPages = Infinity) {
+const getAll = async function getAll(resource, maxPages = Infinity) {
   const key = `${resource}-${maxPages}`;
   if (!cache[key]) cache[key] = await getPages(`${BASE}/${resource}`, maxPages);
   return cache[key];
-}
+};
 
 // Group item names by a field, putting blank values under "unknown".
-function groupBy(items, field) {
+const groupBy = function groupBy(items, field) {
   const groups = {};
   items.forEach((item) => {
     const key = item[field] || 'unknown';
@@ -49,7 +50,7 @@ function groupBy(items, field) {
     groups[key].push(item.name);
   });
   return groups;
-}
+};
 
 app.get('/', (req, res) => res.redirect('/home'));
 
